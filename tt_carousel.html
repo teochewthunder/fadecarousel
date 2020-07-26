@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Fade Carousel</title>
+
+		<style>
+			div {outline: 0px solid #FF0000;}
+			
+			body
+			{
+				font-size: 12px;
+				font-family: verdana;
+			}
+
+			#carouselContainer
+			{
+				width: 800px;
+				height: 600px;
+				margin: 0 auto 0 auto;
+			}
+
+			.margin
+			{
+				width: 10%;
+				height: 100px;
+				float: left;
+				text-align: center;
+				font-size: 5em;
+			}
+
+			.margin input[type="button"]
+			{
+				color: rgba(0, 0, 0, 1);
+				cursor: pointer;
+				margin-top: 250px;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				border: 0px solid red;
+				background-color: rgba(255, 200, 0, 1);
+				color: rgba(255, 255, 255, 1);
+			}
+
+			.margin input[type="button"]:hover
+			{
+				background-color: rgba(255, 200, 0, 0.5);
+			}
+
+			#viewport
+			{
+				width: 80%;
+				height: 100%;
+				float: left;
+				overflow: hidden;
+				border-radius: 15px;
+			}
+
+			#contentContainer
+			{
+				width: 100%;
+				height: 100%;
+				background-color: #004400;
+			}
+
+			.content
+			{
+				width: 100%;
+				height: 100%;
+				float: left;
+				background-size: cover;
+				background-position: 50% 50%;
+				background-repeat: no-repeat;
+				padding-top: 1em;				
+			}
+
+			#content0
+			{
+				margin-right: -100%;
+			}
+
+			.content div
+			{
+				padding: 1em;
+				background-color: rgba(255, 255, 255, 0.5);
+				color: rgba(0, 0, 0, 1);
+				font-weight: bold;
+				width: 80%;
+				border-radius: 5px;
+				margin: 0 auto 0 auto;
+			}
+		</style>
+
+		<script>
+			var carousel = 
+			{
+				fades: 
+				[
+					{
+						bg: "00.jpg",
+						content: "<div><h2>Phasellus ullamcorper</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent fringilla molestie pellentesque. Aliquam auctor scelerisque mattis. Donec maximus ipsum non eros gravida suscipit. Sed vulputate massa orci, non placerat lectus suscipit mollis. Fusce faucibus lorem eu lectus mattis, et dictum urna semper. Maecenas massa magna, commodo at pulvinar ac, lacinia nec augue. Nullam pretium consectetur ultricies. In a mattis justo. Suspendisse potenti. Vivamus scelerisque, urna imperdiet faucibus facilisis, orci elit dictum ex, blandit rutrum metus diam eget mi. Phasellus ullamcorper eu purus eu venenatis. Nullam vestibulum dolor vel felis facilisis, ac rutrum tellus rutrum. Sed vehicula elementum erat, eget mattis tortor rhoncus a. Phasellus ut nisl volutpat, dictum lectus ut, dictum lectus.</p><h2>Quisque pharetra</h2><p>Lorem ipsum vel felis facilisis, ac rutrum tellus rutrum. Sed vehicula elementum erat, eget mattis tortor rhoncus a.</p><p>Vestibulum porta mattis quam a gravida. Aliquam quis quam nulla.</p></div>"
+					},
+					{
+						bg: "01.jpg",
+						content: "<div><h2>Phasellus mattis</h2><p>Lorem ipsum vel felis facilisis, ac rutrum tellus rutrum. Sed vehicula elementum erat, eget mattis tortor rhoncus a.</p></div>"
+					},
+					{
+						bg: "02.jpg",
+						content: "<div><h2>In diam nisi erat</h2><p>Vestibulum porta mattis quam a gravida. Aliquam quis quam nulla. Pellentesque nisi erat, elementum ut maximus sed, euismod vel dui. Curabitur vitae dui nec justo rhoncus imperdiet. In diam risus, egestas dictum viverra vel, pretium sed nisl.</p></div>"
+					},
+					{
+						bg: "03.jpg",
+						content: "<div><h2>Nullam ullamcorper</h2><p>Lorem ipsum scelerisque, urna imperdiet faucibus facilisis, orci elit dictum ex, blandit rutrum metus diam eget mi. Phasellus ullamcorper eu purus eu venenatis. Nullam vestibulum dolor vel felis facilisis, ac rutrum tellus rutrum. Sed vehicula elementum erat, eget mattis tortor rhoncus a. Phasellus ut nisl volutpat, dictum lectus ut, dictum lectus.</p><h2>Quisque pharetra</h2><p><img src='img/03.jpg' height='150' align='right' />Vestibulum porta mattis quam a gravida. Aliquam quis quam nulla. Pellentesque nisi erat, elementum ut maximus sed, euismod vel dui. Curabitur vitae dui nec justo rhoncus imperdiet. In diam risus, egestas dictum viverra vel, pretium sed nisl. Nam mi risus, imperdiet sed purus id, posuere feugiat nibh. Curabitur dignissim ipsum eget est pretium, ut luctus leo dapibus. Praesent in vehicula felis. Nullam quis faucibus justo. Praesent ac turpis tempor elit lobortis sodales laoreet pulvinar velit. Nam vel leo arcu. Cras magna nulla, lacinia in turpis vel, efficitur sagittis sem. Interdum et malesuada fames ac ante ipsum primis in faucibus. In congue consectetur lacus, ac venenatis elit gravida at.</p></div>"
+					},
+					{
+						bg: "04.jpg",
+						content: "<div><h2>Quisque pharetra</h2><p>Quisque eget aliquam urna. Integer tortor justo, fringilla ut diam in, ornare maximus sem. Nam dictum mauris nisl, id posuere sem sodales sit amet. Sed ac nulla ut nunc molestie vestibulum id a ipsum. Duis nec elementum libero. Etiam porttitor turpis eu venenatis porta. Quisque pharetra diam vel dui porta luctus. Duis sed odio viverra, molestie orci et, hendrerit erat. Duis ut tortor nec orci suscipit finibus nec non massa. </p></div>"
+					}
+				],
+				currentFadeIndex: 0,
+				contentContainer: undefined,
+				c0: undefined,
+				c1: undefined,
+				canMove: true,
+				begin: function()
+				{
+					this.contentContainer = document.getElementById("contentContainer");
+					this.c0 = document.getElementById("content0");
+					this.c1 = document.getElementById("content1");
+
+					this.setContent(this.currentFadeIndex);
+
+					setInterval
+					(
+						function()
+						{
+							carousel.animateFader();
+						},
+						5000
+					);					
+				},		
+				animateFader: function()
+				{
+					if (this.canMove)
+					{
+						this.fade("left");	
+					}
+				},				
+				fade: function(dir)
+				{
+					var nextFade;
+
+					this.setTransitionSpeed(0);
+
+					if (dir == "left")
+					{
+						if (this.currentFadeIndex == this.fades.length - 1)
+						{
+							nextFade = 0;
+						}
+						else
+						{
+							nextFade = this.currentFadeIndex + 1;
+						}
+					}
+
+					if (dir == "right")
+					{
+						if (this.currentFadeIndex == 0)
+						{
+							nextFade = this.fades.length - 1;
+						}
+						else
+						{
+							nextFade = this.currentFadeIndex - 1;
+						}	
+					}
+
+					this.setOpacity(100, 0);
+					this.setContent(nextFade);
+
+					setTimeout
+					(
+						function()
+						{
+							carousel.setTransitionSpeed(3);
+						},
+						250
+					);
+
+					setTimeout
+					(
+						function()
+						{
+							carousel.setOpacity(0, 100);
+							carousel.currentFadeIndex = nextFade;
+						},
+						500
+					);
+
+					setTimeout
+					(
+						function()
+						{
+							carousel.canMove = true;
+						},
+						5000
+					);
+				},
+				setTransitionSpeed: function(interval)
+				{
+					this.c0.style.webKitTransition = interval + "s all";
+					this.c0.style.transition = interval + "s all";
+
+					this.c1.style.webKitTransition = interval + "s all";
+					this.c1.style.transition = interval + "s all";
+				},
+				setOpacity: function(c0_opacity, c1_opacity)
+				{
+					this.c0.style.filter = "opacity(" + c0_opacity + "%)";
+					this.c1.style.filter = "opacity(" + c1_opacity + "%)";
+				},
+				setContent: function(next)
+				{
+					this.c0.innerHTML = this.fades[this.currentFadeIndex].content;
+					this.c0.style.backgroundImage = "url(img/" + this.fades[this.currentFadeIndex].bg + ")";
+
+					this.c1.innerHTML = this.fades[next].content;
+					this.c1.style.backgroundImage = "url(img/" + this.fades[next].bg + ")";
+				},
+				faderButtonClick: function(dir)
+				{
+					this.canMove = false;
+					this.fade(dir);
+				}
+			}
+		</script>
+	</head>
+
+	<body onload = "carousel.begin();">
+		<div id="carouselContainer">
+			<div class="margin">
+				<input type="button" onclick="carousel.faderButtonClick('left')" value="&#9668;"/>
+			</div>
+
+			<div id="viewport">
+				<div id="contentContainer">
+					<div id="content0" class="content"></div>
+					<div id="content1" class="content"></div>
+				</div>
+			</div>
+
+			<div class="margin">
+				<input type="button" onclick="carousel.faderButtonClick('right')" value="&#9658;"/>
+			</div>	
+		</div>
+	</body>
+</html>
